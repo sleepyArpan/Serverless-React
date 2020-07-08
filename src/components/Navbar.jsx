@@ -14,7 +14,7 @@ const Navbar = () => {
     <StyledNavbar>
       <StyledNavBrand>
         <Link to='/'>
-          <Accent>Typing.</Accent>Game
+          <Accent>Typing.</Accent>Game.
         </Link>
       </StyledNavBrand>
       <StyledNavItems>
