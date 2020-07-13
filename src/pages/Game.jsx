@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   StyledGame,
   StyledScore,
@@ -8,18 +8,61 @@ import {
 import { Strong, Accent } from '../styled/Random';
 
 const Game = ({ history }) => {
+  const MAX_SECONDS = 50;
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const [currentCharacter, setCurrentCharacter] = useState('');
   const [score, setScore] = useState(0);
-  const MAX_SECONDS = 100;
   const [ms, setMs] = useState(0);
   const [seconds, setSeconds] = useState(MAX_SECONDS);
 
+  // Starts the timer and the game
   useEffect(() => {
+    setRandomCharacter();
     const currentTime = new Date();
     const interval = setInterval(() => updateTime(currentTime), 1);
     return () => clearInterval(interval);
     //eslint-disable-next-line
   }, []);
 
+  // Ends the game
+  useEffect(() => {
+    if (seconds <= -1) {
+      // TODO: Save the score and push it to the database
+      history.push('/gameover');
+    }
+  }, [seconds, history]);
+
+  // Listens to the the keystrokes and updates the score accordingly
+  const keyUpHandler = useCallback(
+    (e) => {
+      console.log(e.key);
+      if (e.key === currentCharacter) {
+        setScore((prevScore) => prevScore + 1);
+      } else {
+        if (score > 0) {
+          setScore((prevScore) => prevScore - 1);
+        }
+      }
+      setRandomCharacter();
+    },
+    [currentCharacter, score]
+  );
+
+  // Sets up the event listeners for the keys
+  useEffect(() => {
+    document.addEventListener('keyup', keyUpHandler);
+    return () => {
+      document.removeEventListener('keyup', keyUpHandler);
+    };
+  }, [keyUpHandler]);
+
+  // Picks a random character from the string above [characters]
+  const setRandomCharacter = () => {
+    const random = Math.floor(Math.random() * 36);
+    setCurrentCharacter(characters[random]);
+  };
+
+  // Updates the time (timer)
   const updateTime = (startTime) => {
     const endTime = new Date();
     const msPassedStr = (endTime.getTime() - startTime.getTime()).toString();
@@ -33,6 +76,7 @@ const Game = ({ history }) => {
     setMs(addLeadingZeros(updatedMs, 3));
   };
 
+  // Formats the time accordingly (Adds 'length amount of leading zeroes')
   const addLeadingZeros = (num, length) => {
     let zeros = '';
     for (let i = 0; i < length; i++) {
@@ -41,30 +85,13 @@ const Game = ({ history }) => {
     return (zeros + num).slice(-length);
   };
 
-  useEffect(() => {
-    if (seconds <= -1) {
-      history.push('/gameover');
-    }
-  }, [seconds, history]);
-
-  const keyUpHandler = (e) => {
-    console.log(e.key);
-  };
-
-  useEffect(() => {
-    document.addEventListener('keyup', keyUpHandler);
-    return () => {
-      document.removeEventListener('keyup', keyUpHandler);
-    };
-  }, []);
-
   return (
     <StyledGame>
       <StyledScore>
         Score:<Strong>{score}</Strong>
       </StyledScore>
       <StyledCharacter>
-        <Accent>A</Accent>
+        <Accent>{currentCharacter}</Accent>
       </StyledCharacter>
       <StyledTimer>
         Time:{' '}
