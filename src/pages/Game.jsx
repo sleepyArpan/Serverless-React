@@ -6,18 +6,20 @@ import {
   StyledCharacter,
 } from '../styled/Game';
 import { Strong, Accent } from '../styled/Random';
+import { useScore } from '../context/ScoreContext';
 
 const Game = ({ history }) => {
-  const MAX_SECONDS = 50;
+  const MAX_SECONDS = 5;
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
   const [currentCharacter, setCurrentCharacter] = useState('');
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useScore();
   const [ms, setMs] = useState(0);
   const [seconds, setSeconds] = useState(MAX_SECONDS);
 
   // Starts the timer and the game
   useEffect(() => {
     setRandomCharacter();
+    setScore(0);
     const currentTime = new Date();
     const interval = setInterval(() => updateTime(currentTime), 1);
     return () => clearInterval(interval);
@@ -27,7 +29,10 @@ const Game = ({ history }) => {
   // Ends the game
   useEffect(() => {
     if (seconds <= -1) {
-      // TODO: Save the score and push it to the database
+      /**
+       * TODO: Save the highscore to a database
+       * !!: Do not forget
+       */
       history.push('/gameover');
     }
   }, [seconds, history]);
@@ -45,7 +50,7 @@ const Game = ({ history }) => {
       }
       setRandomCharacter();
     },
-    [currentCharacter, score]
+    [currentCharacter, score, setScore]
   );
 
   // Sets up the event listeners for the keys
