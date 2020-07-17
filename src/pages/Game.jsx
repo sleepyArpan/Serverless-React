@@ -56,9 +56,7 @@ const Game = ({ history }) => {
   // Sets up the event listeners for the keys
   useEffect(() => {
     document.addEventListener('keyup', keyUpHandler);
-    return () => {
-      document.removeEventListener('keyup', keyUpHandler);
-    };
+    return () => document.removeEventListener('keyup', keyUpHandler);
   }, [keyUpHandler]);
 
   // Picks a random character from the string above [characters]
