@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery } from 'react-query';
 
 import { StyledListItem } from '../styled/HighScores';
 
+async function getHighScores() {
+  const res = await fetch('/.netlify/functions/getHighScores');
+  const data = await res.json();
+  return data;
+}
+
 const HighScores = () => {
-  const [scores, setScores] = useState([]);
+  const { data: scores, status, error } = useQuery('highscores', getHighScores);
 
-  useEffect(() => {
-    const loadHighScores = async () => {
-      try {
-        const res = await fetch('/.netlify/functions/getHighScores');
-        const scores = await res.json();
-        setScores(scores);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    loadHighScores();
-  }, []);
-
+  if (status === 'loading') return <h1>Loading...</h1>;
+  if (status === 'error')
+    return <h1>An Unexpected error occured {error.message}</h1>;
   return (
     <div>
       <h1>HighScores</h1>
