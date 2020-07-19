@@ -1,12 +1,4 @@
-require('dotenv').config();
-const Airtable = require('airtable');
-
-Airtable.configure({
-  apiKey: process.env.AIRTABLE_API_KEY,
-});
-
-const base = Airtable.base(process.env.AIRTABLE_BASE);
-const table = base.table(process.env.AIRTABLE_TABLE);
+const { table, getHighScores } = require('./utils/airtable');
 
 exports.handler = async (event) => {
   console.log(event);
@@ -26,20 +18,12 @@ exports.handler = async (event) => {
     };
   }
   try {
-    const records = await table
-      .select({
-        sort: [{ field: 'Score', direction: 'desc' }],
-      })
-      .firstPage();
-    const formattedRecords = records.map((record) => ({
-      id: record.id,
-      fields: record.fields,
-    }));
+    const records = await getHighScores(false);
     /**
      ** We have got formatted list of records and the lowest score lives in the 9th index of the formatted records
      ** We need to check if the incoming score is greater than the lowest score i.e. the score at index 9
      */
-    const lowestScore = formattedRecords[9];
+    const lowestScore = records[9];
     if (
       typeof lowestScore.fields.Score === 'undefined' ||
       Score > lowestScore.fields.Score
