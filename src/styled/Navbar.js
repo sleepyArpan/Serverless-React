@@ -9,7 +9,7 @@ export const StyledNavbar = styled.nav`
 
 export const StyledNavBrand = styled.div`
   font-size: 1.4rem;
-
+  text-align: left;
   & > a {
     text-decoration: none;
   }

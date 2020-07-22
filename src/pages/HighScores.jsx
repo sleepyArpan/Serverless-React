@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 
 import { StyledListItem } from '../styled/HighScores';
+import { StyledTitle } from '../styled/Random';
 
 async function getHighScores() {
   const res = await fetch('/.netlify/functions/getHighScores');
@@ -17,7 +18,7 @@ const HighScores = () => {
     return <h1>An Unexpected error occured {error.message}</h1>;
   return (
     <div>
-      <h1>HighScores</h1>
+      <StyledTitle>HighScores</StyledTitle>
       <ol>
         {scores.map((score) => (
           <StyledListItem key={score.id}>

@@ -22,4 +22,5 @@ export const StyledCharacter = styled.p`
   grid-row: 2;
   grid-column: 1/4;
   text-align: center;
+  color: #e16365;
 `;
