@@ -1,17 +1,11 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import useHighScore from '../hooks/useHighScore';
 
 import { StyledListItem } from '../styled/HighScores';
 import { StyledTitle } from '../styled/Random';
 
-async function getHighScores() {
-  const res = await fetch('/.netlify/functions/getHighScores');
-  const data = await res.json();
-  return data;
-}
-
 const HighScores = () => {
-  const { data: scores, status, error } = useQuery('highscores', getHighScores);
+  const { scores, status, error } = useHighScore();
 
   if (status === 'loading') return <h1>Loading...</h1>;
   if (status === 'error')
