@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ReactQueryDevtools } from 'react-query-devtools';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import Container from './styled/Container';
 import Main from './styled/Main';
@@ -13,6 +14,12 @@ import HighScores from './pages/HighScores';
 import Navbar from './components/Navbar';
 
 function App() {
+  const { isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <Router>
