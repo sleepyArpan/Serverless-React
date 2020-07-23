@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useScore } from '../context/ScoreContext';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import { StyledLink } from '../styled/Navbar';
 import { StyledCharacter } from '../styled/Game';
@@ -8,6 +9,7 @@ import { StyledTitle } from '../styled/Random';
 const GameOver = ({ history }) => {
   const [score] = useScore();
   const [message, setMessage] = useState('');
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
   if (score === -1) {
     history.push('/');
@@ -17,8 +19,12 @@ const GameOver = ({ history }) => {
     const abortController = new AbortController();
     const saveHighScore = async () => {
       try {
+        const token = await getAccessTokenSilently();
         const options = {
           method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             Name: 'asghaifgi',
             Score: score,
@@ -36,10 +42,14 @@ const GameOver = ({ history }) => {
         console.log(error);
       }
     };
-    saveHighScore();
+    if (isAuthenticated) {
+      saveHighScore();
+    } else {
+      setMessage('You should login or signup to compete for high scores');
+    }
 
     return () => abortController.abort();
-  }, [score]);
+  }, [score, getAccessTokenSilently, isAuthenticated]);
 
   return (
     <div>

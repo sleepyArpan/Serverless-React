@@ -4,12 +4,15 @@ import App from './App';
 import { ScoreProvider } from './context/ScoreContext';
 import { Auth0Provider } from '@auth0/auth0-react';
 
+import config from './auth_config.json';
+
 ReactDOM.render(
   <React.StrictMode>
     <Auth0Provider
-      domain='typing-game.au.auth0.com'
-      clientId='36nhaJGa2mTEr9bd143zfJHm47A2aKAd'
-      redirectUri={window.location.origin}>
+      domain={config.domain}
+      clientId={config.client}
+      redirectUri={window.location.origin}
+      audience={config.audience}>
       <ScoreProvider>
         <App />
       </ScoreProvider>
