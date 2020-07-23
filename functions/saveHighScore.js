@@ -1,13 +1,21 @@
 const { table, getHighScores } = require('./utils/airtable');
+const { getAccessTokenFromHeaders } = require('./utils/auth');
 
 exports.handler = async (event) => {
-  console.log(event);
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
       body: JSON.stringify({ err: 'That method is not allowed to use' }),
     };
   }
+  const token = getAccessTokenFromHeaders(event.headers);
+  if (!token) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ err: 'Not Authorized' }),
+    };
+  }
+  console.log(token);
   const { Score, Name } = JSON.parse(event.body);
   if (!Score || !Name) {
     return {
