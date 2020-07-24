@@ -30,7 +30,6 @@ async function validateAccessToken(token) {
     const getSigningKey = promisify(jwksClient.getSigningKey);
     const key = await getSigningKey(kid);
     const signingKey = key.publicKey;
-
     const options = { algorithms: alg };
     jwt.verify(token, signingKey, options);
     return decodedToken.payload;

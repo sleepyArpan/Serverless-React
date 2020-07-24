@@ -56,8 +56,12 @@ const GameOver = ({ history }) => {
       <StyledTitle>GameOver</StyledTitle>
       <h2>{message}</h2>
       <StyledCharacter>{score}</StyledCharacter>
-      <StyledLink to='/'>Go Home</StyledLink>
-      <StyledLink to='/game'>Play Again</StyledLink>
+      <div>
+        <StyledLink to='/'>Go Home</StyledLink>
+      </div>
+      <div>
+        <StyledLink to='/game'>Play Again</StyledLink>
+      </div>
     </div>
   );
 };
