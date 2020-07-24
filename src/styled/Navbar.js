@@ -31,3 +31,22 @@ export const StyledLink = styled(Link)`
     color: var(--accent-color);
   }
 `;
+
+export const StyledButtonLink = styled.button`
+  border: 0;
+  font-size: 1.2rem;
+  background: none;
+  cursor: pointer;
+  &:hover {
+    color: var(--accent-color);
+  }
+`;
+
+export const StyledThemeToggler = styled.button`
+  background-color: var(--main-text-color);
+  color: var(--main-bg-color);
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+`;

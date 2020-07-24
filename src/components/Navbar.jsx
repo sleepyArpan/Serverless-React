@@ -7,6 +7,8 @@ import {
   StyledNavBrand,
   StyledNavItems,
   StyledLink,
+  StyledButtonLink,
+  StyledThemeToggler,
 } from '../styled/Navbar';
 import { Accent } from '../styled/Random';
 
@@ -29,22 +31,26 @@ const Navbar = ({ toggleTheme }) => {
         </li>
         {isAuthenticated && (
           <li>
-            <button
+            <StyledButtonLink
               onClick={() =>
                 logout({
                   returnTo: window.location.origin,
                 })
               }>
               Logout
-            </button>
+            </StyledButtonLink>
           </li>
         )}
         {!isAuthenticated && (
           <li>
-            <button onClick={() => loginWithRedirect()}>Login</button>
+            <StyledButtonLink onClick={() => loginWithRedirect()}>
+              Login
+            </StyledButtonLink>
           </li>
         )}
-        <button onClick={toggleTheme}>Toggle Theme</button>
+        <StyledThemeToggler onClick={toggleTheme}>
+          Toggle Theme
+        </StyledThemeToggler>
       </StyledNavItems>
     </StyledNavbar>
   );

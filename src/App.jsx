@@ -6,6 +6,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Container from './styled/Container';
 import Main from './styled/Main';
 import Global from './styled/Global';
+import Loader from './styled/Loader';
 
 import { darkTheme, lightTheme } from './styled/Themes';
 import { ThemeProvider } from 'styled-components';
@@ -22,7 +23,7 @@ function App() {
 
   useEffect(() => {
     const localStorageTheme = localStorage.getItem('theme');
-    setTheme(localStorageTheme || 'light');
+    setTheme(localStorageTheme || 'dark');
   }, []);
 
   function toggleTheme() {
@@ -44,7 +45,7 @@ function App() {
           <Global />
           <Main>
             {isLoading ? (
-              <p>Loading...</p>
+              <Loader>Loading...</Loader>
             ) : (
               <Container>
                 <Navbar toggleTheme={toggleTheme} />
