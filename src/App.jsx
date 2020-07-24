@@ -7,6 +7,9 @@ import Container from './styled/Container';
 import Main from './styled/Main';
 import Global from './styled/Global';
 
+import { darkTheme, lightTheme } from './styled/Themes';
+import { ThemeProvider } from 'styled-components';
+
 import Home from './pages/Home';
 import Game from './pages/Game';
 import GameOver from './pages/GameOver';
@@ -16,25 +19,30 @@ import Navbar from './components/Navbar';
 function App() {
   const { isLoading } = useAuth0();
 
+  const theme = 'light';
+  const currentTheme = theme === 'light' ? lightTheme : darkTheme;
+
   return (
     <>
       <Router>
-        <Global />
-        <Main>
-          {isLoading ? (
-            <p>Loading...</p>
-          ) : (
-            <Container>
-              <Navbar />
-              <Switch>
-                <Route path='/game' component={Game} />
-                <Route path='/highscores' component={HighScores} />
-                <Route path='/gameover' component={GameOver} />
-                <Route path='/' component={Home} />
-              </Switch>
-            </Container>
-          )}
-        </Main>
+        <ThemeProvider theme={currentTheme}>
+          <Global />
+          <Main>
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <Container>
+                <Navbar />
+                <Switch>
+                  <Route path='/game' component={Game} />
+                  <Route path='/highscores' component={HighScores} />
+                  <Route path='/gameover' component={GameOver} />
+                  <Route path='/' component={Home} />
+                </Switch>
+              </Container>
+            )}
+          </Main>
+        </ThemeProvider>
       </Router>
       <ReactQueryDevtools initialIsOpen={false} />
     </>
