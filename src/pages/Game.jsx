@@ -40,7 +40,6 @@ const Game = ({ history }) => {
   // Listens to the the keystrokes and updates the score accordingly
   const keyUpHandler = useCallback(
     (e) => {
-      console.log(e.key);
       if (e.key === currentCharacter) {
         setScore((prevScore) => prevScore + 1);
       } else {
