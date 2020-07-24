@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ReactQueryDevtools } from 'react-query-devtools';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -18,8 +18,23 @@ import Navbar from './components/Navbar';
 
 function App() {
   const { isLoading } = useAuth0();
+  const [theme, setTheme] = useState('');
 
-  const theme = 'light';
+  useEffect(() => {
+    const localStorageTheme = localStorage.getItem('theme');
+    setTheme(localStorageTheme || 'light');
+  }, []);
+
+  function toggleTheme() {
+    if (theme === 'light') {
+      setTheme('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      setTheme('light');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+
   const currentTheme = theme === 'light' ? lightTheme : darkTheme;
 
   return (
@@ -32,7 +47,7 @@ function App() {
               <p>Loading...</p>
             ) : (
               <Container>
-                <Navbar />
+                <Navbar toggleTheme={toggleTheme} />
                 <Switch>
                   <Route path='/game' component={Game} />
                   <Route path='/highscores' component={HighScores} />

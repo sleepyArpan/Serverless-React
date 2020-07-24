@@ -10,7 +10,7 @@ import {
 } from '../styled/Navbar';
 import { Accent } from '../styled/Random';
 
-const Navbar = () => {
+const Navbar = ({ toggleTheme }) => {
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   return (
@@ -44,6 +44,7 @@ const Navbar = () => {
             <button onClick={() => loginWithRedirect()}>Login</button>
           </li>
         )}
+        <button onClick={toggleTheme}>Toggle Theme</button>
       </StyledNavItems>
     </StyledNavbar>
   );
